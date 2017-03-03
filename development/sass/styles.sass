@@ -2,13 +2,39 @@
     padding: 0px
     margin: 0px
     box-sizing: border-box
-.array
-    .celda
-        width: 20px
-        height: 20px
-        border: 1px solid #DADADA
-        float: left
-        font-size: 14px
+body
+    text-align: center
+header
+    width: 100%
+    height: 200px
+    background-color: #4A4A4A
+.vector-estado
+    margin-top: 20px
+    display: inline-block
+    background-color: #FAFAFA
+    .fila
         display: flex
-        justify-content: center
-        align-items: center
+        width: 320px
+        .elemento
+            width: 20px
+            height: 20px
+            border: 1px solid #DADADA
+            font-size: 14px
+            display: flex
+            justify-content: center
+            align-items: center
+            position: relative
+input
+  font-size: 50px
+  letter-spacing: 22px
+  width: 500px
+  height: 50px
+  background: repeating-linear-gradient(90deg,rgba(0, 0, 0, 1),rgba(0, 0, 0, 0) 2px,rgba(0, 0, 0, 0) 50px )
+@media screen and (min-width: 1000px)
+    .vector-estado
+        .fila
+            width: 640px
+            .elemento
+                width: 40px
+                height: 40px
+                font-size: 17px
