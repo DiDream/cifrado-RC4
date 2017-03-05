@@ -4,12 +4,31 @@
     <meta charset="utf8">
     <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=2, minimum-scale=1">
     <title>Cifrado RC4</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
+    <div id="modal">
+      <section id="box">
+        <div class="form">
+          <input type="text" placeholder="Escribe tu mensaje a cifrar" id="input-message" required>
+          <input type="text" placeholder="Escribe tu clave" id="input-key" required>
+          <button id="cifrar">CIFRAR</button>
+        </div>
+      </section>
+    </div>
     <header>
-      <input type="text" placeholder="Inserta la clave">
-      <div class="vector-clave"></div>
+      <div class="container">
+        <div class="vector-clave"></div>
+        <div class="operations">
+          <div class="control">
+            <button class="fa fa-step-forward" id="step" aria-hidden="true"></button>
+            <button class="fa fa-fast-forward" id="final" aria-hidden="true"></button>
+            <button class="fa fa-stop" id="parar" aria-hidden="true"></button>
+          </div>
+          <div class="elemento f">0</div>
+        </div>
+      </div>
     </header>
     <div class="vector-estado"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

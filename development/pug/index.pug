@@ -9,11 +9,34 @@ html
             content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=2, minimum-scale=1"
         )
         title Cifrado RC4
-        link(rel='stylesheet', href='/css/styles.css')
+        link(rel='stylesheet', href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
+        link(rel='stylesheet', href='css/styles.css')
     body
+        #modal
+            section#box
+                .form
+                    input(
+                        type="text",
+                        placeholder="Escribe tu mensaje a cifrar",
+                        id="input-message",
+                        required
+                    )
+                    input(
+                        type="text",
+                        placeholder="Escribe tu clave",
+                        id="input-key",
+                        required
+                    )
+                    button#cifrar CIFRAR
         header
-            input(type="text", placeholder="Inserta la clave")
-            .vector-clave
+            .container
+                .vector-clave
+                .operations
+                    .control
+                        button(id="step" class="fa fa-step-forward" aria-hidden="true")
+                        button(id="final" class="fa fa-fast-forward" aria-hidden="true")
+                        button(id="parar" class="fa fa-stop" aria-hidden="true")
+                    .elemento.f 0
         .vector-estado
         script(
             src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"

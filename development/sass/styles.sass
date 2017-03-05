@@ -1,40 +1,125 @@
+$verde: #179D9C
 *
     padding: 0px
     margin: 0px
     box-sizing: border-box
 body
     text-align: center
-header
-    width: 100%
-    height: 200px
-    background-color: #4A4A4A
-.vector-estado
-    margin-top: 20px
-    display: inline-block
-    background-color: #FAFAFA
-    .fila
-        display: flex
-        width: 320px
-        .elemento
-            width: 20px
-            height: 20px
-            border: 1px solid #DADADA
-            font-size: 14px
+    #modal
+        display: none
+    &.modal-open
+        overflow: hidden
+        #modal
+            width: 100%
+            height: 100%
+            background-color: rgba(0,0,0,.7)
+            z-index: 10
             display: flex
             justify-content: center
             align-items: center
-            position: relative
-input
-  font-size: 50px
-  letter-spacing: 22px
-  width: 500px
-  height: 50px
-  background: repeating-linear-gradient(90deg,rgba(0, 0, 0, 1),rgba(0, 0, 0, 0) 2px,rgba(0, 0, 0, 0) 50px )
-@media screen and (min-width: 1000px)
-    .vector-estado
-        .fila
-            width: 640px
-            .elemento
-                width: 40px
-                height: 40px
-                font-size: 17px
+            position: fixed
+            #box
+                width: 90%
+                max-width: 350px
+                height: 300px
+                background-color: $verde
+                border-radius: 5px
+                padding-top: 20px
+                .form
+                    width: 90%
+                    margin: 0 auto
+                    input
+                        display: block
+                        width: 100%
+                        margin: 20px 0
+                        height: 35px
+                        padding-left: 5px
+                        border-radius: 5px
+                        border: 1px solid #DADADA
+                        font-size: 15px
+                    button
+                        height: 35px
+                        width: 150px
+                        border: 0px
+                        border-radius: 5px
+                        background-color: #9D1717
+                        font-size: 15px
+                        color: #fff
+                        cursor: pointer
+header
+    width: 100%
+    background-color: #4A4A4A
+    padding-top: 20px
+    .operations
+        width: 100%
+        height: 40px
+        margin-top: 20px
+        text-align: center
+        color: #fff
+        position: relative
+        .control
+            font-size: 20px
+            display: inline-block
+            button
+                color: #fff
+                background-color: transparent
+                border: 0px
+                margin: 0px 10px
+                cursor: pointer
+        .elemento.f
+            position: absolute
+            top: 0px
+            left: 40px
+            background-color: $verde
+            border: 0px
+            &::after
+                content: "f"
+                position: absolute
+                font-size: 13px
+                bottom: 0px
+                right: 4px
+                color: #FFF 
+.container
+    width: 320px
+    margin: 0 auto
+.vector-estado
+    margin-top: 20px
+    display: inline-block
+.vector-clave
+    display: flex
+    overflow-x: auto
+.fila
+    display: flex
+.elemento
+    width: 20px
+    height: 20px
+    border: 1px solid #DADADA
+    font-size: 10px
+    display: flex
+    justify-content: center
+    align-items: center
+    position: relative
+    background-color: #FAFAFA
+    .index
+        position: absolute
+        font-size: 12px
+        bottom: 0px
+        right: 1px
+        color: #DADADA
+
+@media screen and (min-width: 640px)
+    header
+        padding: 20px 0px
+        text-align: center
+        .operations
+            .control
+                font-size: 35px
+
+    .container
+        width: 640px
+    .fila
+        width: 640px
+    .elemento
+        width: 40px
+        height: 40px
+        font-size: 16px
