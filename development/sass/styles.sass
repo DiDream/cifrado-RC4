@@ -75,10 +75,10 @@ header
             &::after
                 content: "f"
                 position: absolute
-                font-size: 13px
+                font-size: 8px
                 bottom: 0px
                 right: 4px
-                color: #FFF 
+                color: #FFF
 .container
     width: 320px
     margin: 0 auto
@@ -88,6 +88,9 @@ header
 .vector-clave
     display: flex
     overflow-x: auto
+    .fila
+        flex-shrink: 0
+
 .fila
     display: flex
 .elemento
@@ -102,7 +105,7 @@ header
     background-color: #FAFAFA
     .index
         position: absolute
-        font-size: 12px
+        font-size: 5px
         bottom: 0px
         right: 1px
         color: #DADADA
@@ -114,6 +117,9 @@ header
         .operations
             .control
                 font-size: 35px
+            .elemento.f
+                &::after
+                    font-size: 13px
 
     .container
         width: 640px
@@ -123,3 +129,9 @@ header
         width: 40px
         height: 40px
         font-size: 16px
+        .index
+            position: absolute
+            font-size: 12px
+            bottom: 0px
+            right: 1px
+            color: #DADADA

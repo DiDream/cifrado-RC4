@@ -76,7 +76,7 @@ header {
       header .operations .elemento.f::after {
         content: "f";
         position: absolute;
-        font-size: 13px;
+        font-size: 8px;
         bottom: 0px;
         right: 4px;
         color: #FFF; }
@@ -92,6 +92,8 @@ header {
 .vector-clave {
   display: flex;
   overflow-x: auto; }
+  .vector-clave .fila {
+    flex-shrink: 0; }
 
 .fila {
   display: flex; }
@@ -108,7 +110,7 @@ header {
   background-color: #FAFAFA; }
   .elemento .index {
     position: absolute;
-    font-size: 12px;
+    font-size: 5px;
     bottom: 0px;
     right: 1px;
     color: #DADADA; }
@@ -119,6 +121,8 @@ header {
     text-align: center; }
     header .operations .control {
       font-size: 35px; }
+    header .operations .elemento.f::after {
+      font-size: 13px; }
   .container {
     width: 640px; }
   .fila {
@@ -126,4 +130,10 @@ header {
   .elemento {
     width: 40px;
     height: 40px;
-    font-size: 16px; } }
+    font-size: 16px; }
+    .elemento .index {
+      position: absolute;
+      font-size: 12px;
+      bottom: 0px;
+      right: 1px;
+      color: #DADADA; } }
