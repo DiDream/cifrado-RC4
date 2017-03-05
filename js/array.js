@@ -4,6 +4,7 @@ var vectorEstado = [];
 var vectorClave = [];
 var index_i=0;
 var index_f=0;
+var elemento_f=$('#valor-f');
 //Generar Vector Estado
 (function (){
     var vector = $('.vector-estado');
@@ -45,9 +46,7 @@ function generateKeyVector(clave){
     });
 }
 
-function swap(){
-    var i= index_i;
-    var j = index_f;
+function swap(i,j, callback){
     var elemento_i= vectorEstado[i];
     var elemento_j= vectorEstado[j];
     var coor_i = elemento_i[0].getBoundingClientRect();
@@ -58,30 +57,46 @@ function swap(){
         .animate({
             left: `+=${coor_j.left - coor_i.left}`,
             top: `+=${coor_j.top - coor_i.top}`
-        },2000, function(){
-            $(this).css({'border-color': '#DADADA','z-index':'auto'}).find('span').text(j)
-        });
+        },2000);
     elemento_j
         .css({'border-color': 'green','z-index':'10'})
         .animate({
             left: `+=${coor_i.left - coor_j.left}`,
             top: `+=${coor_i.top - coor_j.top}`
         },2000, function(){
-            $(this).css({'border-color': '#DADADA','z-index':'auto'}).find('span').text(i);
+            callback(i,j);
         });;
 
     var tmp = vectorEstado[i];
     vectorEstado[i] = vectorEstado[j];
     vectorEstado[j] = tmp;
 }
-var step = 0;
+
+
+function resetStyles(i,f){
+    vectorClave[i].css('border-color', '#DADADA');
+    vectorEstado[i].css({'border-color': '#DADADA','z-index':'auto'});
+    vectorEstado[f].css({'border-color': '#DADADA','z-index':'auto'});
+}
+function selectElement(i){
+    vectorEstado[i].css('border-color','red');
+    vectorClave[i].css('border-color','red');
+}
 function swapStepVector(){
 
     if(index_i<256){
 
         index_f += vectorEstado[index_i].data('value')+ vectorClave[index_i].data('value');
         index_f %= 256;
-        swap();
+        elemento_f.text(index_f);
+        swap(index_i,index_f, function(i,f){
+            resetStyles(i,f);
+            vectorEstado[i].find('span').text(f);
+            vectorEstado[f].find('span').text(i);
+            if(++i<=256){
+                selectElement(i);
+            }
+        });
         console.log(index_i,index_f);
         index_i++;
     }
@@ -91,8 +106,20 @@ function swapStepVector(){
 $('button#step').on('click',function(){
     swapStepVector();
 });
-//swap(20, 255);
-generateKeyVector(['4']);
+function init(){
+    index_i=0;
+    index_f=0;
+    $('body').removeClass('modal-open');
+    generateKeyVector($('#input-key')
+                            .val()
+                            .split(','));
+                            //.map(function(item){
+                                // Añadir codigo si se permiten letras...
+                                //return parseInt(item, 10);
+                            //})
+    selectElement(index_i);
+    elemento_f.text(0);
+}
 $('#cifrar').on('click', function(){
     var filled = $('#modal #box input:text').filter(function(){
         if($(this).val()==''){
@@ -103,14 +130,6 @@ $('#cifrar').on('click', function(){
     }).length;
 
     if (filled==2){
-        $('body').removeClass('modal-open');
-        generateKeyVector($('#input-key')
-                                .val()
-                                .split(','));
-                                //.map(function(item){
-                                    // Añadir codigo si se permiten letras...
-                                    //return parseInt(item, 10);
-                                //})
-
+        init();
     }
 });
