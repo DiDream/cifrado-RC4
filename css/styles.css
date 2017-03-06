@@ -47,17 +47,25 @@ body {
             color: #fff;
             cursor: pointer; }
 
+@keyframes click-button {
+  0% {
+    text-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff; }
+  50% {
+    text-shadow: 0px 0px 15px #fff, 0px 0px 15px #fff; }
+  100% {
+    text-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff; } }
+
 header {
   width: 100%;
   background-color: #4A4A4A;
-  padding-top: 20px; }
+  padding: 10px 0px; }
   header .operations {
     width: 100%;
-    height: 40px;
-    margin-top: 20px;
     text-align: center;
     color: #fff;
-    position: relative; }
+    position: relative;
+    display: inline-block;
+    margin: 5px 0px; }
     header .operations .control {
       font-size: 20px;
       display: inline-block; }
@@ -66,10 +74,14 @@ header {
         background-color: transparent;
         border: 0px;
         margin: 0px 10px;
-        cursor: pointer; }
+        cursor: pointer;
+        vertical-align: middle; }
+        header .operations .control button.click-animation {
+          animation: click-button 1.2s ease-in-out infinite; }
     header .operations .elemento.f {
       position: absolute;
-      top: 0px;
+      top: 50%;
+      transform: translateY(-50%);
       left: 40px; }
       header .operations .elemento.f.no-value .index {
         font-size: 15px;
@@ -94,11 +106,20 @@ header {
   margin-top: 20px;
   display: inline-block; }
 
+.vector h2 {
+  font-size: 10px;
+  margin: 5px 0px; }
+
+.vector-k {
+  overflow: hidden;
+  transition: height 1s ease-in-out; }
+  .vector-k.hide {
+    height: 0px; }
+
 .vector-clave {
   display: flex;
   overflow-x: auto;
-  width: 100%;
-  height: 20px; }
+  width: 100%; }
   .vector-clave .fila {
     flex-shrink: 0; }
 
@@ -129,7 +150,6 @@ header {
 
 @media screen and (min-width: 640px) {
   header {
-    padding: 20px 0px;
     text-align: center; }
     header .operations .control {
       font-size: 35px; }
@@ -138,8 +158,8 @@ header {
     header .operations .elemento.f .index {
       right: 4px;
       font-size: 15px; }
-    header .vector-clave {
-      height: 40px; }
+  .vector-clave {
+    height: 40px; }
   .container {
     width: 640px; }
   .fila {

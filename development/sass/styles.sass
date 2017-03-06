@@ -46,17 +46,24 @@ body
                         font-size: 15px
                         color: #fff
                         cursor: pointer
+@keyframes click-button
+    0%
+        text-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff
+    50%
+        text-shadow: 0px 0px 15px #fff, 0px 0px 15px #fff
+    100%
+        text-shadow: 0px 0px 0px #fff, 0px 0px 0px #fff
 header
     width: 100%
     background-color: #4A4A4A
-    padding-top: 20px
+    padding: 10px 0px
     .operations
         width: 100%
-        height: 40px
-        margin-top: 20px
         text-align: center
         color: #fff
         position: relative
+        display: inline-block
+        margin: 5px 0px
         .control
             font-size: 20px
             display: inline-block
@@ -66,9 +73,15 @@ header
                 border: 0px
                 margin: 0px 10px
                 cursor: pointer
+                vertical-align: middle
+                &.click-animation
+                    animation: click-button 1.2s ease-in-out infinite
+
+
         .elemento.f
             position: absolute
-            top: 0px
+            top: 50%
+            transform: translateY(-50%)
             left: 40px
             &.no-value
                 .index
@@ -93,11 +106,20 @@ header
 .vector-estado
     margin-top: 20px
     display: inline-block
+.vector
+    h2
+        font-size: 10px
+        margin: 5px 0px
+
+.vector-k
+    overflow: hidden
+    transition: height 1s ease-in-out
+    &.hide
+        height: 0px
 .vector-clave
     display: flex
     overflow-x: auto
     width: 100%
-    height: 20px
     .fila
         flex-shrink: 0
 
@@ -127,7 +149,6 @@ header
 
 @media screen and (min-width: 640px)
     header
-        padding: 20px 0px
         text-align: center
         .operations
             .control
@@ -140,8 +161,8 @@ header
                     right: 4px
                     font-size: 15px
 
-        .vector-clave
-            height: 40px
+    .vector-clave
+        height: 40px
 
     .container
         width: 640px

@@ -6,6 +6,7 @@ var index_i=0;
 var index_f=0;
 var elemento_f=$('.elemento.f .value');
 var run_animation = false;
+var initComplete = false;
 //Generar Vector Estado
 (function (){
     var vector = $('.vector-estado');
@@ -84,6 +85,9 @@ function selectElement(i){
     vectorEstado[i].css('border-color','red');
     vectorClave[i].css('border-color','red');
 }
+function initilizeComplete(){
+    $('button#step, button#ir-final').addClass('click-animation');
+}
 function swapStepVector(){
 
     if(index_i<256){
@@ -96,25 +100,19 @@ function swapStepVector(){
             var tmp = vectorEstado[i];
             vectorEstado[i] = vectorEstado[f];
             vectorEstado[f] = tmp;
-            if(++i<=256){
-                selectElement(i);
-            }
+            if(++i<=256) selectElement(i);
+            else initilizeComplete();
             run_animation=false;
         });
-        console.log(index_i,index_f);
         index_i++;
     }
 }
 function swapCompleteVector(){
-    console.log(vectorEstado);
-
     var vectorS=[], vectorK=[];
     for(var i=0; i<256; i++){
         vectorS.push(vectorEstado[i].data('value'));
         vectorK.push(vectorClave[i].data('value'));
     }
-    console.log(vectorS);
-
     while(index_i<256){
         index_f = (index_f+vectorS[index_i]+vectorK[index_i])%256;
 
@@ -128,6 +126,7 @@ function swapCompleteVector(){
         vectorEstado[i].text(vectorS[i]);
 
     }
+    initilizeComplete();
 }
 $('button#step').on('click',function(){
     if(!run_animation) {
@@ -158,6 +157,7 @@ function init(){
     elemento_f.parent().removeClass('no-value');
     elemento_f.text(0);
 }
+generateKeyVector(['2','5']);
 $('#cifrar').on('click', function(){
     var filled = $('#modal #box input:text').filter(function(){
         if($(this).val()==''){
