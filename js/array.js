@@ -66,10 +66,6 @@ function swap(i,j, callback){
         },2000, function(){
             callback(i,j);
         });;
-
-    var tmp = vectorEstado[i];
-    vectorEstado[i] = vectorEstado[j];
-    vectorEstado[j] = tmp;
 }
 
 
@@ -90,9 +86,12 @@ function swapStepVector(){
         index_f %= 256;
         elemento_f.text(index_f);
         swap(index_i,index_f, function(i,f){
-            resetStyles(i,f);
             vectorEstado[i].find('span').text(f);
             vectorEstado[f].find('span').text(i);
+            resetStyles(i,f);
+            var tmp = vectorEstado[i];
+            vectorEstado[i] = vectorEstado[f];
+            vectorEstado[f] = tmp;
             if(++i<=256){
                 selectElement(i);
             }
@@ -100,12 +99,40 @@ function swapStepVector(){
         console.log(index_i,index_f);
         index_i++;
     }
+}
+function swapCompleteVector(){
+    console.log(vectorEstado);
 
+    var vectorS=[], vectorK=[];
+    for(var i=0; i<256; i++){
+        vectorS.push(vectorEstado[i].data('value'));
+        vectorK.push(vectorClave[i].data('value'));
+    }
+    console.log(vectorS);
 
+    while(index_i<256){
+        index_f = (index_f+vectorS[index_i]+vectorK[index_i])%256;
+
+        var tmp = vectorS[index_i];
+        vectorS[index_i] = vectorS[index_f];
+        vectorS[index_f] = tmp;
+        index_i++;
+    }
+    for(var i=0; i<256; i++){
+        vectorEstado[i].attr('data-value',vectorS[i]);
+        vectorEstado[i][0].childNodes[0].nodeValue=vectorS[i];
+
+    }
 }
 $('button#step').on('click',function(){
     swapStepVector();
 });
+$('button#ir-final').on('click',function(){
+    resetStyles(index_i,index_f);
+    elemento_f.text('');
+    swapCompleteVector();
+
+})
 function init(){
     index_i=0;
     index_f=0;
