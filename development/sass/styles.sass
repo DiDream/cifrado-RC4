@@ -70,18 +70,23 @@ header
             position: absolute
             top: 0px
             left: 40px
-            background-color: $verde
-            border: 0px
-            display: flex
-            justify-content: center
-            align-items: center
-            &::after
-                content: "f"
-                position: absolute
-                font-size: 8px
-                bottom: 0px
-                right: 4px
+            &.no-value
+                .index
+                    font-size: 15px
+                    right: 50%
+                    bottom: 50%
+                    transform: translate(50%,50%)
+            .value
+                border: 0px
+                background-color: $verde
+            .index
+                right: 3px
                 color: #FFF
+                bottom: 0px
+                font-size: 8px
+                transition: all ease-in-out .3s
+
+
 .container
     width: 320px
     margin: 0 auto
@@ -128,8 +133,13 @@ header
             .control
                 font-size: 35px
             .elemento.f
-                &::after
-                    font-size: 13px
+                &.no-value
+                    .index
+                        font-size: 32px
+                .index
+                    right: 4px
+                    font-size: 15px
+
         .vector-clave
             height: 40px
 

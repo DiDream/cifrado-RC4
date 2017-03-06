@@ -70,19 +70,21 @@ header {
     header .operations .elemento.f {
       position: absolute;
       top: 0px;
-      left: 40px;
-      background-color: #179D9C;
-      border: 0px;
-      display: flex;
-      justify-content: center;
-      align-items: center; }
-      header .operations .elemento.f::after {
-        content: "f";
-        position: absolute;
-        font-size: 8px;
+      left: 40px; }
+      header .operations .elemento.f.no-value .index {
+        font-size: 15px;
+        right: 50%;
+        bottom: 50%;
+        transform: translate(50%, 50%); }
+      header .operations .elemento.f .value {
+        border: 0px;
+        background-color: #179D9C; }
+      header .operations .elemento.f .index {
+        right: 3px;
+        color: #FFF;
         bottom: 0px;
-        right: 4px;
-        color: #FFF; }
+        font-size: 8px;
+        transition: all ease-in-out .3s; }
 
 .container {
   width: 320px;
@@ -131,8 +133,11 @@ header {
     text-align: center; }
     header .operations .control {
       font-size: 35px; }
-    header .operations .elemento.f::after {
-      font-size: 13px; }
+    header .operations .elemento.f.no-value .index {
+      font-size: 32px; }
+    header .operations .elemento.f .index {
+      right: 4px;
+      font-size: 15px; }
     header .vector-clave {
       height: 40px; }
   .container {

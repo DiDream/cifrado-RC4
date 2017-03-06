@@ -4,7 +4,7 @@ var vectorEstado = [];
 var vectorClave = [];
 var index_i=0;
 var index_f=0;
-var elemento_f=$('.elemento.f');
+var elemento_f=$('.elemento.f .value');
 var run_animation = false;
 //Generar Vector Estado
 (function (){
@@ -138,7 +138,7 @@ $('button#step').on('click',function(){
 $('button#ir-final').on('click',function(){
     if(!run_animation){
         resetStyles(index_i,index_f);
-        elemento_f.text('');
+        elemento_f.text('').parent().addClass('no-value');
         swapCompleteVector();
     }
 
@@ -155,6 +155,7 @@ function init(){
                                 //return parseInt(item, 10);
                             //})
     selectElement(index_i);
+    elemento_f.parent().removeClass('no-value');
     elemento_f.text(0);
 }
 $('#cifrar').on('click', function(){
