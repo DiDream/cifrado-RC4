@@ -1,5 +1,6 @@
 'use strict'
 
+/* DECLARACION DE VARIABLES */
 var vectorEstado = [];
 var vectorClave = [];
 var index_i=0;
@@ -13,6 +14,9 @@ var controles = {
     complete: $('button#ir-final'),
     stop: $('button#parar')
 };
+var elementVectorStyles;
+
+/* FUNCIONES */
 //Generar Vector Estado
 (function (){
     var vector = $('#vector-s .vector');
@@ -36,6 +40,7 @@ var controles = {
     });
 
 })();
+//Generar vector K
 function generateKeyVector(clave){
     var vector = $('#vector-k .vector');
     for(var i=0; i<16; i++){
@@ -57,6 +62,7 @@ function generateKeyVector(clave){
         vectorClave.push($(this));
     });
 }
+// Generar vector de mensaje original
 function generateOriginalMessageVector(message){
     original_message = message;
     var vector = $('#vector-original-message .vector');
@@ -74,13 +80,12 @@ function generateOriginalMessageVector(message){
     }
     vector.append(fila);
 }
-
+// Intercambiar elementos + animacion
 function swap(i,j, callback){
     var elemento_i= vectorEstado[i];
     var elemento_j= vectorEstado[j];
     var coor_i = elemento_i[0].getBoundingClientRect();
     var coor_j = elemento_j[0].getBoundingClientRect();
-    console.log(coor_i, coor_j);
     elemento_i
         .css({'border-color': 'red','z-index':'10'})
         .animate({
@@ -93,117 +98,67 @@ function swap(i,j, callback){
             left: `+=${coor_i.left - coor_j.left}`,
             top: `+=${coor_i.top - coor_j.top}`
         },1000, function(){
+            var tmp = vectorEstado[i];
+            vectorEstado[i] = vectorEstado[j];
+            vectorEstado[j] = tmp;
+            resetStyles(i,j);
             callback(i,j);
-        });;
+        });
 }
-
-
+//Seleccionar elemento i del vector S y K
+function selectElements(i){
+    vectorEstado[i].css('border-color','red');
+    vectorClave[i].css('border-color','red');
+}
+//Resetea estilos css
 function resetStyles(i,f){
     vectorClave[i].css('border-color', '#DADADA');
     vectorEstado[i].css({'border-color': '#DADADA','z-index':'auto'});
     vectorEstado[f].css({'border-color': '#DADADA','z-index':'auto'});
 }
-function selectElements(i){
-    vectorEstado[i].css('border-color','red');
-    vectorClave[i].css('border-color','red');
+// Operacion XOR dados dos valores end decimal
+function xor_operation(m,k){
+    var result ='';
+    m = m.toString(2);
+    k = k.toString(2);
+    if(m.length<k.length){
+        var tmp = m;
+        m = k;
+        k = tmp;
+    }
+    console.log(k,m);
+
+    tmp=0;
+    while(tmp<k.length){
+
+        tmp++;
+        result = (k[k.length-tmp]==m[m.length-tmp]? '0': '1')+result;
+    }
+    result = m.slice(0,m.length-tmp) +result;
+    console.log('XOR result:', result);
+    return parseInt(result,2);
 }
-function KSA_completed(){
-    var botones = controles.step.add(controles.complete);
-    botones.addClass('click-animation');
-    $('#vector-k').addClass('hide');
-    $('#vector-original-message').removeClass('hide');
-    $('#vector-cipher-sec').removeClass('hide');
-    $('#crypted-message').removeClass('hide');
-    index_i=index_f=0;
-    elemento_f.text('').parent().addClass('no-value');
-    current_method.step = function(){
-        botones.removeClass('click-animation');
-        elemento_f.parent().removeClass('no-value');
-        elemento_f.text(index_f);
-        selectElements((++index_i)%256);
-        PRGA_firstStep();
-    }
-    current_method.complete = function(){
-        botones.removeClass('click-animation');
-        PRGA_complete();
-    }
-
-
-
-}
-function KSA_step(){
-
-    if(index_i<256){
-
-        index_f += vectorEstado[index_i].data('value')+ vectorClave[index_i].data('value');
-        index_f %= 256;
-        elemento_f.text(index_f);
-        swap(index_i,index_f, function(i,f){
-            resetStyles(i,f);
-            var tmp = vectorEstado[i];
-            vectorEstado[i] = vectorEstado[f];
-            vectorEstado[f] = tmp;
-            if(++i<=256) selectElements(i);
-            else KSA_completed();
-            run_animation=false;
-        });
-        index_i++;
-    }
-}
-function KSA_complete(){
-    var vectorS=[], vectorK=[];
-    for(var i=0; i<256; i++){
-        vectorS.push(vectorEstado[i].data('value'));
-        vectorK.push(vectorClave[i].data('value'));
-    }
-    while(index_i<256){
-        index_f = (index_f+vectorS[index_i]+vectorK[index_i])%256;
-
-        var tmp = vectorS[index_i];
-        vectorS[index_i] = vectorS[index_f];
-        vectorS[index_f] = tmp;
-        index_i++;
-    }
-    for(var i=0; i<256; i++){
-        vectorEstado[i].attr('data-value',vectorS[i]);
-        vectorEstado[i].data('value', vectorS[i]);
-        vectorEstado[i].text(vectorS[i]);
-
-    }
-    KSA_completed();
+// Añade un div.elemento a 'vectorElement'
+function AppendVector(vectorElement, value){
+    vectorElement.append(`
+        <div class="elemento">
+            <div class="value" data-value="${value}">
+                ${value}
+            </div>
+        </div>
+        `);
 }
 
-controles.step.on('click',function(){
-    if(!run_animation) {
-        run_animation=true;
-        current_method.step();
-    }
-});
-controles.complete.on('click',function(){
-    if(!run_animation){
-        resetStyles(index_i,index_f);
-        current_method.complete();
-    }
-
-})
-function init(key){ //key: Array
-    index_i=0;
-    index_f=0;
-    $('body').removeClass('modal-open');
-    $('#vector-k').removeClass('hide');
-    generateKeyVector(key);
-    selectElements(index_i);
-    // generateOriginalMessageVector($('#input-message').val().split(','));
-    elemento_f.parent().removeClass('no-value');
-    elemento_f.text(0);
-    current_method.step = KSA_step;
-    current_method.complete = KSA_complete;
-    /* a borrar */
-    generateOriginalMessageVector(['1','34']);
-    // current_method.complete();
-
+function VectorS(index){
+    return vectorEstado[index%256].data('value');
 }
-init(['2','5']);
+function VectorK(index){
+    return vectorClave[index%256].data('value');
+}
+
+
+/* EVENTOS */
+
 $('#cifrar').on('click', function(){
     var filled = $('#modal #box input:text').filter(function(){
         if($(this).val()==''){
@@ -214,6 +169,19 @@ $('#cifrar').on('click', function(){
     }).length;
 
     if (filled==2){
-        init($('#input-key').val().split(','));
+        KSA_init($('#input-key').val().split(','));
     }
+});
+controles.step.on('click',function(){
+    if(!run_animation) {
+        run_animation=true;
+        current_method.step();
+    }
+});
+controles.complete.on('click',function(){
+    if(!run_animation){
+
+        current_method.complete();
+    }
+
 });
