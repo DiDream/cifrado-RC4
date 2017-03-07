@@ -103,7 +103,7 @@ header {
   margin: 0 auto; }
 
 section {
-  margin-top: 10px; }
+  margin-bottom: 10px; }
   section.dinamic {
     overflow: hidden;
     transition: height 1s ease-in-out;
@@ -120,7 +120,7 @@ section {
   display: flex;
   overflow-x: auto;
   width: 100%; }
-  .vector-row .fila {
+  .vector-row .elemento {
     flex-shrink: 0; }
 
 .fila {

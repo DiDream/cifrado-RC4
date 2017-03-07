@@ -4,10 +4,15 @@ var vectorEstado = [];
 var vectorClave = [];
 var index_i=0;
 var index_f=0;
-var elemento_f=$('.elemento.f .value');
+var elemento_f = $('.elemento.f .value');
 var original_message = [];
 var run_animation = false;
 var current_method = new Object();
+var controles = {
+    step: $('button#step'),
+    complete: $('button#ir-final'),
+    stop: $('button#parar')
+};
 //Generar Vector Estado
 (function (){
     var vector = $('#vector-s .vector');
@@ -34,24 +39,40 @@ var current_method = new Object();
 function generateKeyVector(clave){
     var vector = $('#vector-k .vector');
     for(var i=0; i<16; i++){
-        var fila = '<div class="fila">';
+        var fila = '';
         for(var j=0; j<16; j++){
             var index = (i*16+j);
             var value = clave[index%clave.length];
             fila += `
                     <div class="elemento">
                         <div class="value" data-value="${value}">
-                        ${value}
+                            ${value}
                         </div>
                         <span class="index">${index}</span>
                     </div>`;
         }
-        fila+='</div>'
         vector.append(fila);
     }
     $('#vector-k .elemento .value').each(function(){
         vectorClave.push($(this));
     });
+}
+function generateOriginalMessageVector(message){
+    original_message = message;
+    var vector = $('#vector-original-message .vector');
+    var fila = '';
+    for(var i=0; i<message.length; i++){
+
+        fila+= `
+                <div class="elemento">
+                    <div class="value" data-value="${message[i]}">
+                        ${message[i]}
+                    </div>
+                    <span class="index">${i}</span>
+                </div>`;
+
+    }
+    vector.append(fila);
 }
 
 function swap(i,j, callback){
@@ -82,19 +103,35 @@ function resetStyles(i,f){
     vectorEstado[i].css({'border-color': '#DADADA','z-index':'auto'});
     vectorEstado[f].css({'border-color': '#DADADA','z-index':'auto'});
 }
-function selectElement(i){
+function selectElements(i){
     vectorEstado[i].css('border-color','red');
     vectorClave[i].css('border-color','red');
 }
-function KSAComplete(){
-    $('button#step, button#ir-final').addClass('click-animation');
+function KSA_completed(){
+    var botones = controles.step.add(controles.complete);
+    botones.addClass('click-animation');
     $('#vector-k').addClass('hide');
-    current_method.step = PRGAStep;
-    current_method.until_end = PRGAComplete;
+    $('#vector-original-message').removeClass('hide');
+    $('#vector-cipher-sec').removeClass('hide');
+    $('#crypted-message').removeClass('hide');
     index_i=index_f=0;
+    elemento_f.text('').parent().addClass('no-value');
+    current_method.step = function(){
+        botones.removeClass('click-animation');
+        elemento_f.parent().removeClass('no-value');
+        elemento_f.text(index_f);
+        selectElements((++index_i)%256);
+        PRGA_firstStep();
+    }
+    current_method.complete = function(){
+        botones.removeClass('click-animation');
+        PRGA_complete();
+    }
+
+
 
 }
-function swapStepVector(){
+function KSA_step(){
 
     if(index_i<256){
 
@@ -106,14 +143,14 @@ function swapStepVector(){
             var tmp = vectorEstado[i];
             vectorEstado[i] = vectorEstado[f];
             vectorEstado[f] = tmp;
-            if(++i<=256) selectElement(i);
-            else KSAComplete();
+            if(++i<=256) selectElements(i);
+            else KSA_completed();
             run_animation=false;
         });
         index_i++;
     }
 }
-function swapCompleteVector(){
+function KSA_complete(){
     var vectorS=[], vectorK=[];
     for(var i=0; i<256; i++){
         vectorS.push(vectorEstado[i].data('value'));
@@ -129,23 +166,23 @@ function swapCompleteVector(){
     }
     for(var i=0; i<256; i++){
         vectorEstado[i].attr('data-value',vectorS[i]);
+        vectorEstado[i].data('value', vectorS[i]);
         vectorEstado[i].text(vectorS[i]);
 
     }
-    KSAComplete();
+    KSA_completed();
 }
 
-$('button#step').on('click',function(){
+controles.step.on('click',function(){
     if(!run_animation) {
         run_animation=true;
         current_method.step();
     }
 });
-$('button#ir-final').on('click',function(){
+controles.complete.on('click',function(){
     if(!run_animation){
         resetStyles(index_i,index_f);
-        elemento_f.text('').parent().addClass('no-value');
-        current_method.until_end();
+        current_method.complete();
     }
 
 })
@@ -155,12 +192,16 @@ function init(key){ //key: Array
     $('body').removeClass('modal-open');
     $('#vector-k').removeClass('hide');
     generateKeyVector(key);
-    selectElement(index_i);
-    original_message = $('#input-message').val().split(',');
+    selectElements(index_i);
+    // generateOriginalMessageVector($('#input-message').val().split(','));
     elemento_f.parent().removeClass('no-value');
     elemento_f.text(0);
-    current_method.step = swapStepVector;
-    current_method.until_end = swapCompleteVector;
+    current_method.step = KSA_step;
+    current_method.complete = KSA_complete;
+    /* a borrar */
+    generateOriginalMessageVector(['1','34']);
+    // current_method.complete();
+
 }
 init(['2','5']);
 $('#cifrar').on('click', function(){
