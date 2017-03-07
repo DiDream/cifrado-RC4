@@ -11,8 +11,8 @@ function KSA_completed(){
 
     current_method.step = function(){
         botones.removeClass('click-animation');
-        SPRITZ_init();
-        // PRGA_init();
+        // SPRITZ_init();
+        PRGA_init();
     };
     current_method.complete = function(){
         botones.removeClass('click-animation');
@@ -68,7 +68,12 @@ function KSA_init(key){
     $('#vector-k').removeClass('hide');
     generateKeyVector(key);
     selectElements(index_i);
-    generateOriginalMessageVector($('#input-message').val().split(','));
+    generateOriginalMessageVector($('#input-message')
+                                        .val()
+                                        .split(',')
+                                        .map(function(item){
+                                            return parseInt(item);
+                                        }));
     elemento_f.parent().removeClass('no-value');
     elemento_f.text(0);
     current_method.step = KSA_step;

@@ -7,7 +7,7 @@ function SPRITZ_init(){
     SPRITZ_PRG();
 }
 function SPRITZ_PRG(){
-    if(cipher_count++<original_message.length){
+    if(cipher_count<original_message.length){
         index_i= index_i+ w;
         j = k+ VectorS(j+VectorS(index_i));
         k = index_i+k+VectorS(j);
@@ -16,6 +16,8 @@ function SPRITZ_PRG(){
         });
         z = VectorS(j+VectorS(index_i+VectorS(z+k)));
         AppendVector(vec_cipher_sec, z);
+        AppendVector(crypted_message,xor_operation(original_message[cipher_count],z));
+        cipher_count++;
     }
 }
 function SPRITZ_complete(){

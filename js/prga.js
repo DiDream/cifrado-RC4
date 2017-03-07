@@ -20,7 +20,7 @@ function PRGA_secondStep(){
     var index_t= (vectorEstado[index_i].data('value') + vectorEstado[index_f].data('value'))%256;
     var t = vectorEstado[index_t].data('value');
     AppendVector(vec_cipher_sec, t);
-    var crypted_val = xor_operation(parseInt(original_message[index_i-1]), t);
+    var crypted_val = xor_operation(original_message[index_i-1], t);
     AppendVector(crypted_message,crypted_val);
     swap(index_i, index_f, function(i,f){
         run_animation=false;
