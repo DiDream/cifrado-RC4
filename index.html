@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/styles.css">
   </head>
-  <body>
+  <body class="modal-open">
     <div id="modal">
       <section id="box">
         <div class="form">
@@ -32,15 +32,21 @@
       </div>
     </header>
     <div class="container">
-      <div class="vector-k vector">
+      <section class="dinamic hide" id="vector-k">
         <h2>VECTOR K</h2>
-        <div class="vector-clave"></div>
-      </div>
-    </div>
-    <div class="vector-estado vector">
-      <h2>VECTOR S</h2>
+        <div class="vector vector-row"></div>
+      </section>
+      <section class="dinamic hide" id="original_message">
+        <h2>MENSAJE ORIGINAL</h2>
+        <div class="vector vector-row"></div>
+      </section>
+      <section id="vector-s">
+        <h2>VECTOR S</h2>
+        <div class="vector"></div>
+      </section>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="js/array.js"></script>
+    <script src="js/prga.js"></script>
   </body>
 </html>

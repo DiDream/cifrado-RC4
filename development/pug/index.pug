@@ -11,7 +11,7 @@ html
         title Cifrado RC4
         link(rel='stylesheet', href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css")
         link(rel='stylesheet', href='css/styles.css')
-    body
+    body.modal-open
         #modal
             section#box
                 .form
@@ -39,15 +39,22 @@ html
                         .value
                         span.index f
         .container
-            .vector-k.vector
+            section#vector-k.dinamic.hide
                 h2 VECTOR K
-                .vector-clave
-        .vector-estado.vector
-            h2 VECTOR S
+                .vector.vector-row
+            section#original_message.dinamic.hide
+                h2 MENSAJE ORIGINAL
+                .vector.vector-row
+            section#vector-s
+                h2 VECTOR S
+                .vector
         script(
             src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"
         )
 
         script(
             src="js/array.js"
+        )
+        script(
+            src="js/prga.js"
         )

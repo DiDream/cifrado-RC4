@@ -102,25 +102,25 @@ header {
   width: 320px;
   margin: 0 auto; }
 
-.vector-estado {
-  margin-top: 20px;
-  display: inline-block; }
+section {
+  margin-top: 10px; }
+  section.dinamic {
+    overflow: hidden;
+    transition: height 1s ease-in-out;
+    height: 40px; }
+  section h2 {
+    font-size: 10px;
+    margin: 5px 0px;
+    height: 10px; }
 
-.vector h2 {
-  font-size: 10px;
-  margin: 5px 0px; }
+.hide {
+  height: 0px !important; }
 
-.vector-k {
-  overflow: hidden;
-  transition: height 1s ease-in-out; }
-  .vector-k.hide {
-    height: 0px; }
-
-.vector-clave {
+.vector-row {
   display: flex;
   overflow-x: auto;
   width: 100%; }
-  .vector-clave .fila {
+  .vector-row .fila {
     flex-shrink: 0; }
 
 .fila {
@@ -158,11 +158,9 @@ header {
     header .operations .elemento.f .index {
       right: 4px;
       font-size: 15px; }
-  .vector-clave {
-    height: 40px; }
+  section.dinamic {
+    height: 60px; }
   .container {
-    width: 640px; }
-  .fila {
     width: 640px; }
   .elemento {
     width: 40px;

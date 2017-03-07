@@ -76,8 +76,6 @@ header
                 vertical-align: middle
                 &.click-animation
                     animation: click-button 1.2s ease-in-out infinite
-
-
         .elemento.f
             position: absolute
             top: 50%
@@ -98,25 +96,23 @@ header
                 bottom: 0px
                 font-size: 8px
                 transition: all ease-in-out .3s
-
-
 .container
     width: 320px
     margin: 0 auto
-.vector-estado
-    margin-top: 20px
-    display: inline-block
-.vector
+section
+    margin-top: 10px
+    &.dinamic
+        overflow: hidden
+        transition: height 1s ease-in-out
+        height: 40px
     h2
         font-size: 10px
         margin: 5px 0px
+        height: 10px
 
-.vector-k
-    overflow: hidden
-    transition: height 1s ease-in-out
-    &.hide
-        height: 0px
-.vector-clave
+.hide
+    height: 0px !important
+.vector-row
     display: flex
     overflow-x: auto
     width: 100%
@@ -160,13 +156,9 @@ header
                 .index
                     right: 4px
                     font-size: 15px
-
-    .vector-clave
-        height: 40px
-
+    section.dinamic
+        height: 60px
     .container
-        width: 640px
-    .fila
         width: 640px
     .elemento
         width: 40px

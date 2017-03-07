@@ -5,11 +5,12 @@ var vectorClave = [];
 var index_i=0;
 var index_f=0;
 var elemento_f=$('.elemento.f .value');
+var original_message = [];
 var run_animation = false;
-var initComplete = false;
+var current_method = new Object();
 //Generar Vector Estado
 (function (){
-    var vector = $('.vector-estado');
+    var vector = $('#vector-s .vector');
     for(var i=0; i<16; i++){
         var fila = '<div class="fila">';
         for(var j=0; j<16; j++){
@@ -25,13 +26,13 @@ var initComplete = false;
         fila+='</div>'
         vector.append(fila);
     }
-    $('.vector-estado .elemento .value').each(function(){
+    $('#vector-s .elemento .value').each(function(){
         vectorEstado.push($(this));
     });
 
 })();
 function generateKeyVector(clave){
-    var vector = $('.vector-clave');
+    var vector = $('#vector-k .vector');
     for(var i=0; i<16; i++){
         var fila = '<div class="fila">';
         for(var j=0; j<16; j++){
@@ -48,7 +49,7 @@ function generateKeyVector(clave){
         fila+='</div>'
         vector.append(fila);
     }
-    $('.vector-clave .elemento .value').each(function(){
+    $('#vector-k .elemento .value').each(function(){
         vectorClave.push($(this));
     });
 }
@@ -85,8 +86,13 @@ function selectElement(i){
     vectorEstado[i].css('border-color','red');
     vectorClave[i].css('border-color','red');
 }
-function initilizeComplete(){
+function KSAComplete(){
     $('button#step, button#ir-final').addClass('click-animation');
+    $('#vector-k').addClass('hide');
+    current_method.step = PRGAStep;
+    current_method.until_end = PRGAComplete;
+    index_i=index_f=0;
+
 }
 function swapStepVector(){
 
@@ -101,7 +107,7 @@ function swapStepVector(){
             vectorEstado[i] = vectorEstado[f];
             vectorEstado[f] = tmp;
             if(++i<=256) selectElement(i);
-            else initilizeComplete();
+            else KSAComplete();
             run_animation=false;
         });
         index_i++;
@@ -126,38 +132,37 @@ function swapCompleteVector(){
         vectorEstado[i].text(vectorS[i]);
 
     }
-    initilizeComplete();
+    KSAComplete();
 }
+
 $('button#step').on('click',function(){
     if(!run_animation) {
         run_animation=true;
-        swapStepVector();
+        current_method.step();
     }
 });
 $('button#ir-final').on('click',function(){
     if(!run_animation){
         resetStyles(index_i,index_f);
         elemento_f.text('').parent().addClass('no-value');
-        swapCompleteVector();
+        current_method.until_end();
     }
 
 })
-function init(){
+function init(key){ //key: Array
     index_i=0;
     index_f=0;
     $('body').removeClass('modal-open');
-    generateKeyVector($('#input-key')
-                            .val()
-                            .split(','));
-                            //.map(function(item){
-                                // Añadir codigo si se permiten letras...
-                                //return parseInt(item, 10);
-                            //})
+    $('#vector-k').removeClass('hide');
+    generateKeyVector(key);
     selectElement(index_i);
+    original_message = $('#input-message').val().split(',');
     elemento_f.parent().removeClass('no-value');
     elemento_f.text(0);
+    current_method.step = swapStepVector;
+    current_method.until_end = swapCompleteVector;
 }
-generateKeyVector(['2','5']);
+init(['2','5']);
 $('#cifrar').on('click', function(){
     var filled = $('#modal #box input:text').filter(function(){
         if($(this).val()==''){
@@ -168,6 +173,6 @@ $('#cifrar').on('click', function(){
     }).length;
 
     if (filled==2){
-        init();
+        init($('#input-key').val().split(','));
     }
 });
